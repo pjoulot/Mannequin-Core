@@ -9,8 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace LastCall\Mannequin\Core\Pattern;
+namespace LastCall\Mannequin\Core\Tests\Stubs;
 
-class MetadataCollection extends \ArrayObject
+use LastCall\Mannequin\Core\Component\AbstractComponent;
+
+class TestComponent extends AbstractComponent
 {
 }

@@ -11,15 +11,15 @@
 
 namespace LastCall\Mannequin\Core;
 
+use LastCall\Mannequin\Core\Component\ComponentCollection;
+use LastCall\Mannequin\Core\Component\ComponentInterface;
+use LastCall\Mannequin\Core\Component\Sample;
 use LastCall\Mannequin\Core\Engine\EngineInterface;
-use LastCall\Mannequin\Core\Event\PatternEvents;
+use LastCall\Mannequin\Core\Event\ComponentEvents;
 use LastCall\Mannequin\Core\Event\RenderEvent;
-use LastCall\Mannequin\Core\Pattern\PatternCollection;
-use LastCall\Mannequin\Core\Pattern\PatternInterface;
-use LastCall\Mannequin\Core\Pattern\PatternVariant;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class PatternRenderer
+class ComponentRenderer
 {
     private $engine;
     private $dispatcher;
@@ -31,14 +31,14 @@ class PatternRenderer
         $this->dispatcher = $dispatcher;
     }
 
-    public function render(PatternCollection $collection, PatternInterface $pattern, PatternVariant $variant): Rendered
+    public function render(ComponentCollection $collection, ComponentInterface $component, Sample $sample): Rendered
     {
-        return $this->enterRender(function ($isRoot) use ($collection, $pattern, $variant) {
+        return $this->enterRender(function ($isRoot) use ($collection, $component, $sample) {
             $rendered = new Rendered();
-            $event = new RenderEvent($collection, $pattern, $variant, $rendered, $isRoot);
-            $this->dispatcher->dispatch(PatternEvents::PRE_RENDER, $event);
-            $this->engine->render($pattern, $event->getVariables(), $rendered);
-            $this->dispatcher->dispatch(PatternEvents::POST_RENDER, $event);
+            $event = new RenderEvent($collection, $component, $sample, $rendered, $isRoot);
+            $this->dispatcher->dispatch(ComponentEvents::PRE_RENDER, $event);
+            $this->engine->render($component, $event->getVariables(), $rendered);
+            $this->dispatcher->dispatch(ComponentEvents::POST_RENDER, $event);
 
             return $rendered;
         });
@@ -54,8 +54,8 @@ class PatternRenderer
         return $return;
     }
 
-    public function renderSource(PatternInterface $pattern): string
+    public function renderSource(ComponentInterface $component): string
     {
-        return $this->engine->renderSource($pattern);
+        return $this->engine->renderSource($component);
     }
 }

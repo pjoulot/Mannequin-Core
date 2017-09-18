@@ -11,29 +11,29 @@
 
 namespace LastCall\Mannequin\Core\Event;
 
-use LastCall\Mannequin\Core\Pattern\PatternCollection;
-use LastCall\Mannequin\Core\Pattern\PatternInterface;
+use LastCall\Mannequin\Core\Component\ComponentCollection;
+use LastCall\Mannequin\Core\Component\ComponentInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-class PatternDiscoveryEvent extends Event
+class ComponentDiscoveryEvent extends Event
 {
-    private $pattern;
+    private $component;
     private $collection;
 
     public function __construct(
-        PatternInterface $pattern,
-        PatternCollection $collection
+        ComponentInterface $component,
+        ComponentCollection $collection
     ) {
-        $this->pattern = $pattern;
+        $this->component = $component;
         $this->collection = $collection;
     }
 
-    public function getPattern(): PatternInterface
+    public function getComponent(): ComponentInterface
     {
-        return $this->pattern;
+        return $this->component;
     }
 
-    public function getCollection(): PatternCollection
+    public function getCollection(): ComponentCollection
     {
         return $this->collection;
     }
