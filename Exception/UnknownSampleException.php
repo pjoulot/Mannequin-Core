@@ -9,10 +9,8 @@
  * with this source code in the file LICENSE.
  */
 
-namespace LastCall\Mannequin\Core\Tests\Stubs;
+namespace LastCall\Mannequin\Core\Exception;
 
-use LastCall\Mannequin\Core\Pattern\AbstractPattern;
-
-class TestPattern extends AbstractPattern
+class UnknownSampleException extends \RuntimeException
 {
 }

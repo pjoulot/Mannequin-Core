@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace LastCall\Mannequin\Core\Pattern;
+namespace LastCall\Mannequin\Core\Component;
 
-use LastCall\Mannequin\Core\Exception\VariantNotFoundException;
+use LastCall\Mannequin\Core\Exception\UnknownSampleException;
 use LastCall\Mannequin\Core\Variable\VariableSet;
 
-abstract class AbstractPattern implements PatternInterface
+abstract class AbstractComponent implements ComponentInterface
 {
     protected $id;
 
@@ -24,7 +24,7 @@ abstract class AbstractPattern implements PatternInterface
 
     private $tags = [];
 
-    private $variants = [];
+    private $samples = [];
 
     private $used = [];
 
@@ -64,7 +64,7 @@ abstract class AbstractPattern implements PatternInterface
     /**
      * {@inheritdoc}
      */
-    public function setName(string $name): PatternInterface
+    public function setName(string $name): ComponentInterface
     {
         $this->name = $name;
 
@@ -90,7 +90,7 @@ abstract class AbstractPattern implements PatternInterface
     /**
      * {@inheritdoc}
      */
-    public function addMetadata(string $name, $value): PatternInterface
+    public function addMetadata(string $name, $value): ComponentInterface
     {
         $this->tags[$name] = $value;
 
@@ -100,45 +100,45 @@ abstract class AbstractPattern implements PatternInterface
     /**
      * {@inheritdoc}
      */
-    public function createVariant($id, $name, VariableSet $variables = null, array $tags = []): PatternVariant
+    public function createSample($id, $name, VariableSet $variables = null, array $tags = []): Sample
     {
-        return $this->variants[$id] = new PatternVariant($id, $name, $variables, $tags);
+        return $this->samples[$id] = new Sample($id, $name, $variables, $tags);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getVariants(): array
+    public function getSamples(): array
     {
-        return $this->variants;
+        return $this->samples;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasVariant(string $name): bool
+    public function hasSample(string $name): bool
     {
-        return isset($this->variants[$name]);
+        return isset($this->samples[$name]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getVariant(string $name): PatternVariant
+    public function getSample(string $name): Sample
     {
-        if (!isset($this->variants[$name])) {
-            throw new VariantNotFoundException(sprintf('Variant %s not found', $name));
+        if (!isset($this->samples[$name])) {
+            throw new UnknownSampleException(sprintf('Sample %s not found', $name));
         }
 
-        return $this->variants[$name];
+        return $this->samples[$name];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addUsedPattern(PatternInterface $pattern): PatternInterface
+    public function addUsedComponent(ComponentInterface $component): ComponentInterface
     {
-        $this->used[] = $pattern;
+        $this->used[] = $component;
 
         return $this;
     }
@@ -146,7 +146,7 @@ abstract class AbstractPattern implements PatternInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsedPatterns(): array
+    public function getUsedComponents(): array
     {
         return $this->used;
     }
@@ -154,7 +154,7 @@ abstract class AbstractPattern implements PatternInterface
     /**
      * {@inheritdoc}
      */
-    public function addProblem(string $problem): PatternInterface
+    public function addProblem(string $problem): ComponentInterface
     {
         $this->problems[] = $problem;
 

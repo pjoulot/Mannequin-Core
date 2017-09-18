@@ -9,8 +9,8 @@
  * with this source code in the file LICENSE.
  */
 
-namespace LastCall\Mannequin\Core\Exception;
+namespace LastCall\Mannequin\Core\Component;
 
-class VariantNotFoundException extends \RuntimeException
+class MetadataCollection extends \ArrayObject
 {
 }
